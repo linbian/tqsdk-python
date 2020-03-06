@@ -163,7 +163,7 @@ class TqApi(object):
         self._backtest = backtest
         self._ins_url = TqApi.DEFAULT_INS_URL
         self._md_url = TqApi.DEFAULT_MD_URL
-        self._td_url = TqApi.DEFAULT_TD_URL
+        self._custom_td_url = TqApi.DEFAULT_TD_URL
 
         # 支持用户授权
         self._access_token = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJobi1MZ3ZwbWlFTTJHZHAtRmlScjV5MUF5MnZrQmpLSFFyQVlnQ0UwR1JjIn0.eyJqdGkiOiJjZDAzM2JhNC1lZTJkLTRhNjUtYmVjNi04NTAyZmQyMjk4NmUiLCJleHAiOjE2MTI0MDQwMTEsIm5iZiI6MCwiaWF0IjoxNTgwODY4MDExLCJpc3MiOiJodHRwczovL2F1dGguc2hpbm55dGVjaC5jb20vYXV0aC9yZWFsbXMvc2hpbm55dGVjaCIsInN1YiI6IjYzMzJhZmUwLWU5OWQtNDc1OC04MjIzLWY5OTBiN2RmOGY4NSIsInR5cCI6IkJlYXJlciIsImF6cCI6InNoaW5ueV90cSIsImF1dGhfdGltZSI6MCwic2Vzc2lvbl9zdGF0ZSI6IjliNTY1MzYzLTRkNmEtNDc0ZS1hYmMzLTQ0YzU0N2ZhMDZjYiIsImFjciI6IjEiLCJzY29wZSI6ImF0dHJpYnV0ZXMiLCJncmFudHMiOnsiZmVhdHVyZXMiOlsiYWR2Il0sImFjY291bnRzIjpbIioiXX19.OtSweF6mXilJNkQwJQR38BTdYWfShxJrlUIxvHRoZ6AZMtJ9pRMx1SS9mmO9SmA_OPBouLybDmPFbcAMK6_Z4hXNYzd1TyXbPMNIPaMg7E12IEe6RxmsP15j-txfB3lC8LJlc9ey9Y-Hbg2goxS9RCj5m5PR8MuHYwx_E1PwEkOkoBw0eJG5jT0gVh8nHN_p7zsbXOo0PVVNxK1ZBuU-t5NeHy3E33LAOxG1VjqAeOrE4YZrprKcHu6ekd4WPy77cllSRMX6Ob2i9uIFmErbtFK76eYJoPmetSEljAcXwjg3_vWcYOj-xzCeFZoaV9ysNvbANzCS0nAelMvWlBHrkA'
@@ -185,27 +185,20 @@ class TqApi(object):
             else:
                 self._logger.warning("用户权限认证失败 (%d,%s)" % (response.status_code, response.content))
 
+        # 交易中继网关
+        response = requests.get("https://files.shinnytech.com/broker-list.json", headers=self._base_headers,
+                                timeout=30)
+        self.broker_list = json.loads(response.content)
         if url and isinstance(self._account, TqSim):
             self._md_url = url
-        if isinstance(self._account, TqAccount):
-            if url:
-                self._td_url = url
-            else:
-                # 支持分散部署的交易中继网关
-                response = requests.get("https://files.shinnytech.com/broker-list.json", headers=self._base_headers,
-                                        timeout=30)
-                broker_list = json.loads(response.content)
-                if self._account._broker_id not in broker_list:
-                    raise Exception("不支持该期货公司-%s，请联系期货公司。" % (self._account._broker_id))
-                if "TQ" not in broker_list[self._account._broker_id]["category"]:
-                    raise Exception("不支持该期货公司-%s，请联系期货公司。" % (self._account._broker_id))
-                self._td_url = broker_list[self._account._broker_id]["url"]
+        if url and isinstance(self._account, TqAccount):
+            self._custom_td_url = url
         if _ins_url:
             self._ins_url = _ins_url
         if _md_url:
             self._md_url = _md_url
         if _td_url:
-            self._td_url = _td_url
+            self._custom_td_url = _td_url
         self._loop = asyncio.SelectorEventLoop() if loop is None else loop  # 创建一个新的 ioloop, 避免和其他框架/环境产生干扰
 
         # 初始化loop
@@ -1802,6 +1795,20 @@ class TqApi(object):
             "Authorization": "Bearer %s" % self._access_token
         }
         return headers
+
+    @property
+    def _td_url(self):
+        # self._custom_td_url 未设置时, 默认值 TqApi.DEFAULT_TD_URL
+        if self._custom_td_url != TqApi.DEFAULT_TD_URL:
+            return self._custom_td_url
+        elif isinstance(self._account, TqAccount):
+            if self._account._broker_id not in self.broker_list:
+                raise Exception("不支持该期货公司-%s，请联系期货公司。" % (self._account._broker_id))
+            if "TQ" not in self.broker_list[self._account._broker_id]["category"]:
+                raise Exception("不支持该期货公司-%s，请联系期货公司。" % (self._account._broker_id))
+            return self.broker_list[self._account._broker_id]["url"]
+        else:
+            return TqApi.DEFAULT_TD_URL
 
     @staticmethod
     def _merge_diff(result, diff, prototype, persist):
