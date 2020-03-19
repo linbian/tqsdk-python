@@ -14,7 +14,7 @@ SYMBOL_JSON = {
     "sn":{"sylbom":"SN0","name":"沪锡","contractSize":"1","exchangeName":"上期所","exchangeCode":"SHFE"},
     "ni":{"sylbom":"NI0","name":"沪镍","contractSize":"1","exchangeName":"上期所","exchangeCode":"SHFE"},
     "sp":{"sylbom":"SP0","name":"纸浆","contractSize":"10","exchangeName":"上期所","exchangeCode":"SHFE"},
-    "nr":{"sylbom":"NR0","name":"20号胶","contractSize":"10","exchangeName":"上期所","exchangeCode":"SHFE"},
+    # "nr":{"sylbom":"NR0","name":"20号胶","contractSize":"10","exchangeName":"上期所","exchangeCode":"SHFE"}, ## 该品种新浪取不到数据
     "ss":{"sylbom":"SS0","name":"不锈钢","contractSize":"5","exchangeName":"上期所","exchangeCode":"SHFE"},
     "wr":{"sylbom":"WR0","name":"线材","contractSize":"10","exchangeName":"上期所","exchangeCode":"SHFE"},  ## 上期所
 
