@@ -35,8 +35,8 @@ SYMBOL_JSON = {
     "jm":{"sylbom":"JM0","name":"焦煤","contractSize":"60","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
     "cs":{"sylbom":"CS0","name":"玉米淀粉","contractSize":"10","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
     "eg":{"sylbom":"EG0","name":"乙二醇","contractSize":"10","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
-    "rr":{"sylbom":"RR0","name":"粳米","contractSize":"10","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
-    "eb":{"sylbom":"EB0","name":"苯乙烯","contractSize":"5","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
+    # "rr":{"sylbom":"RR0","name":"粳米","contractSize":"10","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
+    # "eb":{"sylbom":"EB0","name":"苯乙烯","contractSize":"5","exchangeName":"大连商品交易所","exchangeCode":"DCE"},    ### 对的，代码v，又叫聚氯乙烯
 
     "rs":{"sylbom":"RS0","name":"菜籽","contractSize":"10","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"}, ## 油菜籽-郑商所
     "rn":{"sylbom":"RM0","name":"菜粕","contractSize":"10","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
@@ -60,8 +60,8 @@ SYMBOL_JSON = {
     "cy":{"sylbom":"CY0","name":"棉纱","contractSize":"5","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
     "ap":{"sylbom":"AP0","name":"鲜苹果","contractSize":"10","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
     "cj":{"sylbom":"CJ0","name":"红枣","contractSize":"5","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
-    "ur":{"sylbom":"UR0","name":"尿素","contractSize":"20","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
-    "sa":{"sylbom":"SA0","name":"纯碱","contractSize":"20","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
+    # "ur":{"sylbom":"UR0","name":"尿素","contractSize":"20","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
+    # "sa":{"sylbom":"SA0","name":"纯碱","contractSize":"20","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"},
     # "pm":{"sylbom":"PM0","name":"普麦","contractSize":"50","exchangeName":"郑州商品交易所","exchangeCode":"CZCE"}, ## 新浪没有该项数据
 }
 
